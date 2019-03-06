@@ -3,43 +3,49 @@ const express = require('express');
 const app = express();
 
 app.set('view engine', 'hbs');
+app.set('view options', { layout: '../public/views/layout.hbs' });
 app.use(express.urlencoded({extended:false}));
+app.use(express.static('public'))
 
 const birds = {"Bald Eagle":3,"Yellow Billed Duck":7,"Great Cormorant":4};
-const filterNum = 0
+let filterNum = 0
 
 
 app.get('/', (req, res) => {
-    res.render('home',{});
+    res.render('../public/views/home',{});
  });
 
  app.get('/birds', (req, res) => {
      // name for the page 
-    let content;
-    if(req.ruery){
-        content = birdsdic;
-    }else{
-        let newdic = {birds:{}};
-        for(let i in birdsdic){
-            if(birdsdic[i] >= filterNum){
-                newdic.birds[i] = birdsdic.birds[i];
-            }
-        }
-        content = newdic;
-    }
-    res.render('home',content);
+   if(req.query.filter === undefined){
+   res.redirect(`/birds?filter=${filterNum}`);
+   }else{
+    let filterBirds = Object.assign(...
+    Object.entries(birds).filter(([k,v]) => v>req.query.filter).map(([k,v]) => ({[k]:v})));
+    res.render("../public/views/birds",{birds:filterBirds});
+   }
+   
  });
 
 app.get('/settings', (req, res) => {
-    if(req.query.hasOwnProperty('mininum')){
-    };
+    res.render('../public/views/settings', {currMin: filterNum})
 });
 
 
- app.post('/', (req, res) => {
-    res.send(req.body);
-    pets.push(req.body.name);
-    res.redirect('/');
+ app.post('/birds', (req, res) => {
+    
+    if(birds.hasOwnProperty(req.body.birdName)){
+    birds[req.body.birdName]++;
+    }else{
+    birds[req.body.birdName] = 1;;
+    }
+    res.redirect('/birds');
+ });
+
+ app.post('/settings', (req, res) => {
+    
+    filterNum = req.body.newMin;
+    res.redirect('/settings');
  });
 
 app.listen(process.env.PORT);

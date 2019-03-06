@@ -1,14 +1,15 @@
+<h3>Sightings</h3>
+
 <ul>
 {{#each birds}}
-<li>{{@key}}, {{this}}</li>
+<li>{{this}} x {{@key}}</li>
 {{/each}}
 </ul>
 
-<form method="GET" action="">
-    filter by number: <input type="number" name="name">
-    <input type="submit">
-</form>
-<form method="POST" action="">
-    new bird name: <input type="text" name="name">
+
+<form method="POST" action="/birds">
+    new bird name: <input type="text" name="birdName">
     <input type="submit" value="add">
 </form>
+
+<p>Back to <a href="/">home page</a> or change the <a href="/settings">settings</a></p>
