@@ -5,10 +5,10 @@ const app = express();
 app.set('view engine', 'hbs');
 app.set('view options', { layout: '../public/views/layout.hbs' });
 app.use(express.urlencoded({extended:false}));
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 const birds = {"Bald Eagle":3,"Yellow Billed Duck":7,"Great Cormorant":4};
-let filterNum = 0
+let filterNum = 0;
 
 
 app.get('/', (req, res) => {
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
    if(req.query.filter === undefined){
    res.redirect(`/birds?filter=${filterNum}`);
    }else{
-    let filterBirds = Object.assign(...
+    const filterBirds = Object.assign(...
     Object.entries(birds).filter(([k,v]) => v>req.query.filter).map(([k,v]) => ({[k]:v})));
     res.render("../public/views/birds",{birds:filterBirds});
    }
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
  });
 
 app.get('/settings', (req, res) => {
-    res.render('../public/views/settings', {currMin: filterNum})
+    res.render('../public/views/settings', {currMin: filterNum});
 });
 
 
@@ -37,7 +37,7 @@ app.get('/settings', (req, res) => {
     if(birds.hasOwnProperty(req.body.birdName)){
     birds[req.body.birdName]++;
     }else{
-    birds[req.body.birdName] = 1;;
+    birds[req.body.birdName] = 1;
     }
     res.redirect('/birds');
  });
