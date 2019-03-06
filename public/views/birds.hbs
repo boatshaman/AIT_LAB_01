@@ -1,6 +1,8 @@
-{{#each birds as |b|}}
-<div>{{b}}</div>
-{{/eaach}}
+<ul>
+{{#each birds}}
+<li>{{@key}}, {{this}}</li>
+{{/each}}
+</ul>
 
 <form method="GET" action="">
     filter by number: <input type="number" name="name">
@@ -10,4 +12,3 @@
     new bird name: <input type="text" name="name">
     <input type="submit" value="add">
 </form>
-
