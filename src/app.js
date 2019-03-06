@@ -1,15 +1,16 @@
+const http = require('http');
 const express = require('express');
 const app = express();
 
 app.set('view engine', 'hbs');
 app.use(express.urlencoded({extended:false}));
 
-const birdsdic = {birds:{"Bald Eagle":3,"Yellow Billed Duck":7,"Great Cormorant":4}};
+const birds = {"Bald Eagle":3,"Yellow Billed Duck":7,"Great Cormorant":4};
 const filterNum = 0
-const birdslst = ["Bald Eagle","Yellow Billed Duck","Great Cormorant"];
-let birdstring = ``
+
+
 app.get('/', (req, res) => {
-    res.render('layout',null);
+    res.render('home',{});
  });
 
  app.get('/birds', (req, res) => {
@@ -41,4 +42,7 @@ app.get('/settings', (req, res) => {
     res.redirect('/');
  });
 
- app.listen(3000);
+app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280000);
